@@ -1,7 +1,7 @@
 html
 <div align="center">
 	<img src="https://raw.githubusercontent.com/Ishidawg/LeShade/refs/heads/rebuild/assets/logo256.png">
-	<h1>LeShade — A ReShade Manager</h1>
+	<h1>LeShade — A GUI ReShade manager for Linux</h1>
 	<div>
 		<img alt="GitHub License" src="https://img.shields.io/github/license/ishidawg/LeShade">
 		<img alt="GitHub Downloads (all assets, all releases)" src="https://img.shields.io/github/downloads/ishidawg/LeShade/total">

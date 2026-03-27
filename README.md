@@ -1,7 +1,7 @@
 <div align="center">
 	<img src="https://raw.githubusercontent.com/Ishidawg/LeShade/refs/heads/rebuild/assets/logo256.png">
-	<h1>LeShade - A Reshade Manager</h1>
-	<div display="flex">
+	<h1>LeShade — A ReShade Manager</h1>
+	<div>
 		<img alt="GitHub License" src="https://img.shields.io/github/license/ishidawg/LeShade">
 		<img alt="GitHub Downloads (all assets, all releases)" src="https://img.shields.io/github/downloads/ishidawg/LeShade/total">
 		<img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/ishidawg/LeShade">
@@ -12,101 +12,123 @@
 	</div>
 </div>
 
-*This started as a university project (mentioned in the [old readme](https://github.com/Ishidawg/LeShade/blob/main/OLD-README.md)), grew into a passion project, and here we are.*
+LeShade is a Linux GUI tool for installing and managing [ReShade](https://reshade.me/) — a post-processing injector that adds effects like ambient occlusion, depth of field, and color correction to games. It handles downloading ReShade, injecting it into a game's directory, and uninstalling it cleanly on a per-game basis. It started as a university project and grew from there. The [old README](https://github.com/Ishidawg/LeShade/blob/main/OLD-README.md) has the backstory.
 
-LeShade is a ReShade manager for Linux — think mod manager, but built specifically for ReShade. Features include:
-
+**Features:**
 - Common API support *(DX9, DX10, DX11, DX12, OpenGL)*
 - Direct3D 8.x support
 - Addon and non-addon ReShade versions
-- Release version selection
+- ReShade release version support
 - Per-game uninstall from previous installations
 - Multiple shader repositories
 
+---
+
 ### Why no Vulkan support?
 
-For Vulkan games on Linux, [VkBasalt](https://github.com/DadSchoorse/vkBasalt) is the better tool. ReShade's Vulkan support works differently from other APIs — instead of a renamed `.dll` dropped into the game folder, it relies on a global directory (`C:\ProgramData\ReShade`) and registry keys pointing to it. That setup doesn't translate cleanly to Linux. I tried the manual steps and even ran `VulkanRT-X64-1.4.341.0-Installer.exe` through protontricks and WINEPREFIX — no luck. Feel free to try replacing `vulkan-1.dll` in System32 with the runtime from Vulkan's site; maybe you'll have better results. If you know how to fix this properly, contributions are very welcome. See [issue #16](https://github.com/Ishidawg/LeShade/issues/16) for more context.
+For Vulkan games on Linux, use [VkBasalt](https://github.com/DadSchoorse/vkBasalt) instead.
 
-Note: DXVK is fine — this only applies to **native** Vulkan.
+ReShade with Vulkan doesn't work by simply dropping a renamed `.dll` into the game directory — it relies on a global `C:\ProgramData\ReShade` folder, specific `.dll` files, `.json` config files, and registry keys pointing to that location. On Linux, that chain breaks down. After following the manual steps and attempting to install `VulkanRT-X64-1.4.341.0-Installer.exe` via *protontricks* and *WINEPREFIX*, no luck. Replacing `vulkan-1.dll` in `System32` is worth trying if you want to experiment, and contributions to fix this are welcome — but Vulkan support isn't something I can ship right now.
+
+Note: This doesn't affect DXVK, which works fine. More detail in [issue #16](https://github.com/Ishidawg/LeShade/issues/16).
+
+---
 
 ## Usage
 
-The UI is straightforward — if you've used a mod manager or the ReShade installer wizard before, you'll be right at home. There's also a [video guide](https://youtu.be/ge8558huYfE) if you'd prefer that. Download the AppImage or Flatpak from the [releases page](https://github.com/Ishidawg/LeShade/releases).
+If you've used a mod manager or the ReShade installer wizard before, LeShade should feel familiar. There's also a [video guide](https://youtu.be/ge8558huYfE). Grab the AppImage or Flatpak from the [releases page](https://github.com/Ishidawg/LeShade/releases).
 
-**AppImage:**
-1. Select `LeShade-x86_64.AppImage`
-2. Right-click → Properties → Permissions → **Allow executing file as program**
-3. Done
+**AppImage**
+1. Download `LeShade-x86_64.AppImage`
+2. Right-click → Properties → Permissions → check *Allow executing file as program*
+3. Run it.
 
-**Flatpak:**
-1. `cd ~/Downloads`
-2. `flatpak install ./LeShade-x86_64.flatpak`
-3. Done
-
-### Arch Linux
-
-Two AUR options: `leshade-git` (always latest commit) and `leshade-bin` *(thanks to [@italoghost](https://github.com/italoghost))* (latest release).
-
-```
-paru -S leshade-bin   # or yay -S leshade-bin
-paru -S leshade-git   # or yay -S leshade-git
+**Flatpak**
+```bash
+cd ~/Downloads
+flatpak install ./LeShade-x86_64.flatpak
 ```
 
-### Fedora
+**Arch Linux (AUR)**
 
+`leshade-git` tracks the latest commit. `leshade-bin` *(thanks [@italoghost](https://github.com/italoghost))* tracks the latest release.
+```bash
+paru -S leshade-bin   # or leshade-git
+# or
+yay -S leshade-bin    # or leshade-git
 ```
+
+**Gentoo Linux (GURU)**
+
+Available as `games-util/leshade` in [GURU](https://wiki.gentoo.org/wiki/Project:GURU).
+```bash
+# Add GURU as described at: https://wiki.gentoo.org/wiki/Project:GURU/Information_for_End_Users
+emerge --ask games-util/leshade
+```
+
+**Fedora (COPR)**
+```bash
 sudo dnf copr enable ishidaw/leshade
 sudo dnf install leshade
 ```
 
-### Direct3D 8.0
+**Direct3D 8.0**
 
-Games using Direct3D 8.0 require environment variables set in your launcher (Steam, Heroic, Lutris, Faugus). Examples:
+Games using D3D 8.0 require environment variables set in your launcher. Examples for Steam and Heroic:
 
 <div align="center">
-	<h3>Steam launch options</h3>
+	<h4>Steam</h4>
 	<img alt="Steam launch options" src="https://i.imgur.com/HEq7U4X.png" width="800" />
+	<h4>Heroic</h4>
+	<img alt="Heroic Games Launcher" src="https://i.imgur.com/Ymj68nY.png" width="800" />
 </div>
-<div align="center">
-	<h3>Heroic launch options</h3>
-	<img alt="Heroic games launcher" src="https://i.imgur.com/Ymj68nY.png" width="800" />
-</div>
+
+---
 
 ## Development
 
-LeShade is built with PySide6 and default Qt widgets, which means it integrates cleanly with your system theme. Qt was the obvious pick — PCSX2, Duckstation, and ShadPS4 all use it and they all look great. The project was written entirely by hand, no AI involved.
+LeShade is built with PySide6 and standard Qt widgets, which gives it **seamless system theme integration**. Qt was chosen after seeing how well it works in apps like PCSX2, Duckstation, and ShadPS4. The logo was made in Inkscape. LeShade was written entirely without AI.
 
-Builds (AppImage and Flatpak) have been tested on Oracle VM across Ubuntu 25.10, Ubuntu 24.04.3, and Linux Mint 22.2, plus CachyOS on bare metal. See [PR #9](https://github.com/Ishidawg/LeShade/pull/9) for details. The logo was made in Inkscape.
+Tested builds (AppImage and Flatpak) on Oracle VirtualBox with Ubuntu 25.10, Ubuntu 24.04.3, and Linux Mint 22.2, plus CachyOS without a VM. See [PR #9](https://github.com/Ishidawg/LeShade/pull/9) for details.
 
-### Config Files
+### Config files
 
-LeShade stores game data in `manager.json` inside the config directory. This file holds each game's name and install path, used for displaying the uninstall list and cleaning up properly.
+LeShade stores game data in `manager.json`:
 
-The location depends on how you installed it:
+| Version | Path |
+|---|---|
+| AppImage | `~/.config/leshade/manager.json` |
+| Flatpak | `~/.var/app/io.github.ishidawg.LeShade/config/leshade/manager.json` |
 
-- **AppImage:** `~/.config/leshade/manager.json`
-- **Flatpak:** `~/.var/app/io.github.ishidawg.LeShade/config/leshade/manager.json`
+The file stores each game's name and path — used to populate the uninstall list and to cleanly remove ReShade from a game.
+
+---
 
 ## Contributing
 
-Clone the repo, make your changes, open a pull request. Issues count too — reporting bugs is a genuine contribution.
+Clone the repo, make your changes, open a pull request. Bug reports via issues count as contributions too.
 
-**PR template:**
+```bash
+git add . && git commit -m "My changes" && git push origin main
+```
+
+Pull requests should follow this format:
+
 ```md
 ## Contribution title
 
-**Did you use AI to vibe-code this?**
+**Have you used AI to vibe code?**
 Response.
-**Did you use AI as a research source?**
+**Have you used AI as a research source?**
 Response.
-**Did you test this locally?**
+**Have you tested locally?**
 Response.
 
 ### Fixes:
-Description of what you changed.
+Description of what you fixed.
 ```
 
 ### Sources
-- `d3dcompiler_47.dll` (64-bit & 32-bit) from [Windows SDK 10.0.26100.0](https://learn.microsoft.com/en-us/windows/apps/windows-sdk/downloads)
-- `d3d8to9.dll` from [crosire](https://github.com/crosire/d3d8to9?tab=readme-ov-file)
-- [AppImage](https://github.com/crosire/d3d8to9?tab=readme-ov-file) tool used for packaging
+- `d3dcompiler_47.dll` (64-bit & 32-bit) — [Windows SDK 10.0.26100.0](https://learn.microsoft.com/en-us/windows/apps/windows-sdk/downloads)
+- `d3d8to9.dll` — [crosire/d3d8to9](https://github.com/crosire/d3d8to9)
+- [AppImage](https://appimage.org/) — used to build one of the packages

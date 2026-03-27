@@ -13,7 +13,7 @@ html
 	</div>
 </div>
 
-LeShade is a Linux GUI tool for installing and managing [ReShade](https://reshade.me/) — the popular post-processing injector that adds effects like ambient occlusion, depth of field, and color correction straight into your games. It takes care of downloading ReShade, injecting it into a game’s folder, and uninstalling everything cleanly on a per-game basis. The whole thing started as a university project and just kept growing from there. The [old README](https://github.com/Ishidawg/LeShade/blob/main/OLD-README.md) has the full backstory if you’re curious.
+LeShade is a Linux GUI application for installing and managing [ReShade](https://reshade.me/) — a popular post-processing injector that adds effects such as ambient occlusion, depth of field, and color correction to games. It automates the download of ReShade, its injection into a game’s directory, and clean per-game uninstallation. The project originated as a university assignment and has since grown into a fully-featured tool. The [old README](https://github.com/Ishidawg/LeShade/blob/main/OLD-README.md) provides additional background.
 
 **Features:**
 - Common API support *(DX9, DX10, DX11, DX12, OpenGL)*
@@ -27,17 +27,17 @@ LeShade is a Linux GUI tool for installing and managing [ReShade](https://reshad
 
 ### Why no Vulkan support?
 
-For Vulkan games on Linux, just use [VkBasalt](https://github.com/DadSchoorse/vkBasalt) instead — it’s the right tool for the job.
+For Vulkan games on Linux, [VkBasalt](https://github.com/DadSchoorse/vkBasalt) remains the recommended solution.
 
-ReShade on Vulkan doesn’t work by simply dropping a renamed `.dll` into the game folder. It needs a global `C:\ProgramData\ReShade` folder, specific `.dll` files, `.json` config files, and registry keys that point to everything. On Linux that whole chain falls apart. I tried following the manual steps, even installed `VulkanRT-X64-1.4.341.0-Installer.exe` through protontricks and a custom WINEPREFIX, but it never clicked. Swapping out `vulkan-1.dll` in System32 is something you can experiment with if you want, and I’d love a PR if anyone figures it out. For now, Vulkan support just isn’t something I can ship. (Note: this has nothing to do with DXVK — that works great.)
+ReShade’s Vulkan implementation does not work by simply placing a renamed `.dll` into the game directory. It depends on a global `C:\ProgramData\ReShade` folder, specific `.dll` files, `.json` configuration files, and registry keys. On Linux this setup does not translate directly. Manual installation attempts — including running `VulkanRT-X64-1.4.341.0-Installer.exe` via protontricks in a custom WINEPREFIX — were unsuccessful. Replacing `vulkan-1.dll` in System32 may be worth exploring for experimental purposes, and contributions toward a working solution are welcome. For the time being, Vulkan support cannot be provided. (Note: this is unrelated to DXVK, which continues to function correctly.)
 
-More details in [issue #16](https://github.com/Ishidawg/LeShade/issues/16).
+More details are available in [issue #16](https://github.com/Ishidawg/LeShade/issues/16).
 
 ---
 
 ## Usage
 
-If you’ve ever used a mod manager or the official ReShade installer wizard, LeShade will feel right at home. There’s also a short [video guide](https://youtu.be/ge8558huYfE) if you want a quick walkthrough. Grab the AppImage or Flatpak from the [releases page](https://github.com/Ishidawg/LeShade/releases).
+If you have previously used a mod manager or the official ReShade installer wizard, LeShade should feel familiar. A short [video guide](https://youtu.be/ge8558huYfE) is also available. The latest AppImage and Flatpak packages can be found on the [releases page](https://github.com/Ishidawg/LeShade/releases).
 
 **AppImage**
 1. Download `LeShade-x86_64.AppImage`
@@ -75,7 +75,7 @@ sudo dnf install leshade
 
 **Direct3D 8.0**
 
-Games using D3D 8.0 need a couple of environment variables set in your launcher. Here’s how it looks in Steam and Heroic:
+Games using D3D 8.0 require specific environment variables to be set in the game launcher. Examples for Steam and Heroic are shown below:
 
 <div align="center">
 	<h4>Steam</h4>
@@ -88,26 +88,26 @@ Games using D3D 8.0 need a couple of environment variables set in your launcher.
 
 ## Development
 
-LeShade is built with PySide6 and plain Qt widgets, so it blends perfectly with your system theme. I went with Qt because it just works so well in apps like PCSX2, Duckstation, and ShadPS4. The logo was drawn by hand in Inkscape. And yes — the entire project was written by a human, no AI involved at any point.
+LeShade is built with PySide6 and standard Qt widgets, providing seamless integration with the system theme. Qt was selected for its proven reliability in applications such as PCSX2, Duckstation, and ShadPS4. The logo was created manually in Inkscape. The entire project was written by hand, with no AI assistance at any stage.
 
-I test every build (AppImage and Flatpak) on Oracle VirtualBox with Ubuntu 25.10, Ubuntu 24.04.3, and Linux Mint 22.2, plus native runs on CachyOS. See [PR #9](https://github.com/Ishidawg/LeShade/pull/9) for the full testing details.
+Builds (AppImage and Flatpak) are tested on Oracle VirtualBox using Ubuntu 25.10, Ubuntu 24.04.3, and Linux Mint 22.2, as well as natively on CachyOS. See [PR #9](https://github.com/Ishidawg/LeShade/pull/9) for complete testing details.
 
 ### Config files
 
-LeShade keeps track of your games in `manager.json`:
+LeShade stores game data in `manager.json`:
 
-| Version   | Path |
-|-----------|------|
-| AppImage  | `~/.config/leshade/manager.json` |
-| Flatpak   | `~/.var/app/io.github.ishidawg.LeShade/config/leshade/manager.json` |
+| Version | Path |
+|---|---|
+| AppImage | `~/.config/leshade/manager.json` |
+| Flatpak | `~/.var/app/io.github.ishidawg.LeShade/config/leshade/manager.json` |
 
-This file stores each game’s name and path so the uninstall list stays accurate and ReShade can be removed cleanly.
+This file records each game’s name and path, enabling accurate uninstall lists and clean removal of ReShade files.
 
 ---
 
 ## Contributing
 
-Clone the repo, make your changes, and open a pull request. Bug reports count as contributions too — every bit helps.
+Clone the repository, implement your changes, and submit a pull request. Bug reports are also welcome and count as contributions.
 
 ```bash
 git add . && git commit -m "My changes" && git push origin main
